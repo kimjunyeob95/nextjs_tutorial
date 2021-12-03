@@ -1,15 +1,14 @@
 import axios from "axios";
+import React, { useContext } from "react";
 import Head from "next/head";
 import { Divider, Header } from "semantic-ui-react";
 import ItemList from "../src/component/Home/ItemList";
-import styles from "../styles/Home.module.css";
 
 export default function Home({ list }) {
   return (
     <>
       <Head>
-        <title>HOME | Nextjs</title>
-        <meta name="description" content="넥스트 홈입니다."></meta>
+        <title>Home | Nextjs made by junyeob</title>
       </Head>
       <>
         <Header as="h3" style={{ paddingTop: 40 }}>

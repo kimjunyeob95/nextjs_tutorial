@@ -1,19 +1,29 @@
 /*
   글로벌 css와 레이아웃을 정의한다.
 */
+import ContextStore from "../ContextApi/Context";
 import "../styles/globals.css";
 import "semantic-ui-css/semantic.min.css";
+import Head from "next/head";
 import Footer from "../src/component/Footer";
 import Top from "../src/component/Top";
-import React from "react";
 
+import { Container } from "semantic-ui-react";
+import ChageRouter from "../src/component/ChageRouter";
 function MyApp({ Component, pageProps }) {
   return (
-    <div style={{ width: 1000, margin: "0 auto" }}>
-      <Top />
-      <Component {...pageProps} />
-      <Footer />
-    </div>
+    <ContextStore>
+      <Head>
+        <title>Nextjs made by junyeob</title>
+        <meta name="description" content="nextjs를 이용한 사이트입니다."></meta>
+      </Head>
+      <ChageRouter />
+      <Container>
+        <Top />
+        <Component {...pageProps} />
+        <Footer />
+      </Container>
+    </ContextStore>
   );
 }
 
