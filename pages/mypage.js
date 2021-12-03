@@ -72,7 +72,7 @@ export default function Mypage({ userData }) {
 }
 
 export async function getServerSideProps(context) {
-  const seq = JSON.parse(context.req.cookies.mInfo)?.tm_seq;
+  const seq = context.req.cookies.mInfo ? JSON.parse(context.req.cookies.mInfo)?.tm_seq : null;
   const apiUrl = `${process.env.NEXT_PUBLIC_PHP_API}/userinfo?tm_seq=${seq}`;
   const res = await axios.get(apiUrl);
   const data = res?.data;
