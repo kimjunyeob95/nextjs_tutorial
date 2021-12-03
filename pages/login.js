@@ -24,7 +24,7 @@ export default function Login() {
     const formData = new FormData();
     formData.append("tm_id", $("#tm_id").val());
     formData.append("tm_pw", $("#tm_pw").val());
-    axios.post(`${process.env.NEXT_PUBLIC_PHP_API}/login`, formData).then((res) => {
+    axios.post(`${process.env.NEXT_PUBLIC_PHP_API}/user/login`, formData).then((res) => {
       if (res.data.code === "TRUE") {
         //로그인 성공
         const expires = new Date();
@@ -35,7 +35,7 @@ export default function Login() {
         });
 
         dispatch({ type: "login", mInfo: res.data.mInfo });
-        router.push("/mypage").then(() => alert(res.data.msg));
+        router.push("/member/mypage").then(() => alert(res.data.msg));
       } else if (res.data.code !== "TRUE") {
         alert(res.data.msg);
         return false;
