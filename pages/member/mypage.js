@@ -70,7 +70,7 @@ export default function Mypage({ userData }) {
   return (
     <>
       <Head>
-        <title>mypage | Nextjs made by junyeob</title>
+        <title>회원페이지</title>
       </Head>
       {userData?.tm_seq && (
         <div>
@@ -116,7 +116,6 @@ export default function Mypage({ userData }) {
 }
 
 export async function getServerSideProps(context) {
-  console.log(context.req.cookies);
   const seq = context.req.cookies.mInfo ? JSON.parse(context.req.cookies.mInfo)?.tm_seq : null;
   const apiUrl = `${process.env.NEXT_PUBLIC_PHP_API}/user/userinfo?tm_seq=${seq}`;
   const res = await axios.get(apiUrl);
