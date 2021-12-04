@@ -29,10 +29,12 @@ export default function Login() {
         //로그인 성공
         const expires = new Date();
         expires.setDate(expires.getDate() + 1);
-        cookie.save("mInfo", res.data.mInfo, {
-          path: "/",
-          expires,
-        });
+        if (!cookie.load("mInfo")) {
+          cookie.save("mInfo", res.data.mInfo, {
+            path: "/",
+            expires,
+          });
+        }
 
         dispatch({ type: "login", mInfo: res.data.mInfo });
         router.push("/member/mypage").then(() => alert(res.data.msg));

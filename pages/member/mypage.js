@@ -29,7 +29,7 @@ export default function Mypage({ userData }) {
     axios.post(`${process.env.NEXT_PUBLIC_PHP_API}/user/logout`, formData).then((res) => {
       if (res.data.code === "TRUE") {
         //로그아웃 성공
-        cookie.save("mInfo", null);
+        cookie.remove("mInfo", { path: "/" });
         dispatch({ type: "logout" });
         router.push("/").then(() => alert(res.data.msg));
       } else {
@@ -116,11 +116,14 @@ export default function Mypage({ userData }) {
 }
 
 export async function getServerSideProps(context) {
+  console.log(context.req.cookies);
   const seq = context.req.cookies.mInfo ? JSON.parse(context.req.cookies.mInfo)?.tm_seq : null;
   const apiUrl = `${process.env.NEXT_PUBLIC_PHP_API}/user/userinfo?tm_seq=${seq}`;
   const res = await axios.get(apiUrl);
-  const data = res?.data;
-
+  let data = res?.data;
+  if (!seq) {
+    data = null;
+  }
   return {
     props: {
       userData: data,

@@ -22,13 +22,13 @@ export default function Signup() {
       }
     });
 
-    if (!$("#agreeFlag").is(":checked")) {
-      validation = false;
-      alert(`회원가입 동의를 체크해주세요.`);
-      $("#agreeFlag").focus();
-      return false;
-    }
     if (validation) {
+      if (!$("#agreeFlag").is(":checked")) {
+        validation = false;
+        alert(`회원가입 동의를 체크해주세요.`);
+        $("#agreeFlag").focus();
+        return false;
+      }
       const formData = new FormData();
       formData.append("tm_id", $("#tm_id").val());
       formData.append("tm_pw", $("#tm_pw").val());
@@ -45,7 +45,7 @@ export default function Signup() {
           });
 
           dispatch({ type: "login", mInfo: res.data.mInfo });
-          router.push("/mypage").then(() => alert(res.data.msg));
+          router.push("/member/mypage").then(() => alert(res.data.msg));
         } else if (res.data.code !== "TRUE") {
           alert(res.data.msg);
           return false;
