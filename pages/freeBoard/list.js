@@ -96,7 +96,7 @@ export default function List({ allCount, list }) {
               <Table.HeaderCell width={3}>제목</Table.HeaderCell>
               <Table.HeaderCell width={4}>내용</Table.HeaderCell>
               <Table.HeaderCell width={1}>썸네일</Table.HeaderCell>
-              <Table.HeaderCell width={1}>추천수</Table.HeaderCell>
+              <Table.HeaderCell width={1}>조회수</Table.HeaderCell>
               <Table.HeaderCell width={1}>작성자</Table.HeaderCell>
               <Table.HeaderCell width={1}>작성일시</Table.HeaderCell>
             </Table.Row>
@@ -116,7 +116,7 @@ export default function List({ allCount, list }) {
                   <Table.Cell>
                     {element.tfb_thumb ? <Image width={80} src={element.tfb_thumb} /> : <Image width={80} src="/images/defaultThumb.png" />}
                   </Table.Cell>
-                  <Table.Cell>{element.tfb_favorite_count}</Table.Cell>
+                  <Table.Cell>{element.tfb_view_count}</Table.Cell>
                   <Table.Cell>{element.tm_name}</Table.Cell>
                   <Table.Cell>{element.tfb_regDate}</Table.Cell>
                 </Table.Row>
@@ -142,7 +142,7 @@ export default function List({ allCount, list }) {
         )}
       </Segment>
       <Segment basic textAlign="center">
-        <Button onClick={() => handleLocation("/freeBoard/register")} primary>
+        <Button onClick={() => handleLocation(`/freeBoard/register`)} primary>
           등록하기
         </Button>
       </Segment>
