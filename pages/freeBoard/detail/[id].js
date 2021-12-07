@@ -59,6 +59,7 @@ export default function Tfb_seq({ item, comment }) {
     axios.post(`${process.env.NEXT_PUBLIC_PHP_API}/freeBoard/addBoardComment`, formData).then((res) => {
       if (res.data.code === "TRUE") {
         alert(res.data.msg);
+        $("textarea").val("");
         axios.get(`${process.env.NEXT_PUBLIC_PHP_API}/freeBoard/detail?id=${router.query.id}`).then((res) => {
           if (res.data.code === "TRUE") {
             setApi(res.data.data);
@@ -209,6 +210,6 @@ export async function getStaticProps(context) {
       item: res.data.data ? res.data.data : null,
       comment: res.data.comment ? res.data.comment : null,
     },
-    revalidate: 5,
+    revalidate: 1,
   };
 }
