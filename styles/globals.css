@@ -14,3 +14,13 @@ a {
 * {
   box-sizing: border-box;
 }
+
+ul li::marker{content: none;}
+.freeBoard.list ul {display: flex; justify-content: center;}
+.freeBoard.list ul li {width: 3vw; text-align: center; cursor: pointer; font-size: 0.6625vw;}
+.freeBoard.list ul li.selected {font-size: 1vw;}
+.ui.selection.dropdown{min-width: auto !important;}
+.cusor.pointer{cursor: pointer;}
+#__next textarea { resize: none;}
+/* .freeBoard .form-field {width:16vw;margin-right: 1vw;} */
+

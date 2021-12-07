@@ -1,25 +1,57 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Divider, Header, Segment, Table, Image } from "semantic-ui-react";
-import $ from "jquery";
+import { Divider, Header, Segment, Table, Image, Button, Input, Form } from "semantic-ui-react";
 import axios from "axios";
 import Head from "next/head";
-import cookie from "react-cookies";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
-import { Button } from "semantic-ui-react";
-import { authContext } from "../../ContextApi/Context";
+import { useEffect } from "react";
+import ReactPaginate from "react-paginate";
 
-export default function List() {
-  const [state, dispatch] = useContext(authContext);
+export default function List({ allCount, list }) {
   const router = useRouter();
+  let sub_query = "";
 
+  useEffect(() => {
+    if (router.query.page) {
+      sub_query += `page=${router.query.page}`;
+    } else {
+      sub_query += `page=1`;
+    }
+    if (router.query.searchType) {
+      sub_query += `&searchType=${router.query.searchType}`;
+    }
+    if (router.query.searchValue) {
+      sub_query += `&searchValue=${router.query.searchValue}`;
+    }
+  }, [router.query]);
+  const searchOption = [
+    { key: 1, value: "tfb_title", text: "제목" },
+    { key: 2, value: "tfb_content", text: "내용" },
+    { key: 3, value: "tfb_regSeq", text: "작성자" },
+  ];
   const handleLocation = (link) => {
     router.push(link);
   };
-
+  const handleSubmit = (event) => {
+    const searchValue = $("#searchValue").val();
+    const searchType = $("#searchType").val();
+    sub_query = `page=${router.query.page ? router.query.page : 1}&searchType=${searchType ? encodeURI(searchType) : ""}&searchValue=${
+      searchValue ? encodeURI(searchValue) : ""
+    }`;
+    router.replace(`/freeBoard/list?${sub_query}`);
+  };
+  const handlePageClick = (event) => {
+    sub_query = "";
+    if (router.query.searchType) {
+      sub_query += `&searchType=${encodeURI(router.query.searchType)}`;
+    }
+    if (router.query.searchValue) {
+      sub_query += `&searchValue=${encodeURI(router.query.searchValue)}`;
+    }
+    router.replace(`/freeBoard/list?page=${event.selected + 1}${sub_query}`);
+  };
   return (
-    <>
+    <div className="freeBoard list">
       <Head>
         <title>자유게시판</title>
       </Head>
@@ -29,6 +61,33 @@ export default function List() {
         </Header>
 
         <Divider clearing />
+
+        <Form id="searchForm">
+          <Form.Group>
+            <Form.Field
+              width={2}
+              className="selection"
+              id="searchType"
+              control="select"
+              defaultValue={router.query.searchType ? router.query.searchType : searchOption[0].value}
+            >
+              {searchOption.map((element) => (
+                <option key={element?.key} value={element.value}>
+                  {element.text}
+                </option>
+              ))}
+            </Form.Field>
+            <Form.Field
+              width={4}
+              className="form-field"
+              id="searchValue"
+              defaultValue={router.query.searchValue}
+              control={Input}
+              placeholder="검색어를 입력하세요."
+            />
+            <Form.Field width={2} id="form-button-control-public" control={Button} content="검색" onClick={(e) => handleSubmit(e)} primary />
+          </Form.Group>
+        </Form>
 
         <Table striped textAlign="center">
           <Table.Header>
@@ -44,25 +103,78 @@ export default function List() {
           </Table.Header>
 
           <Table.Body>
-            <Table.Row>
-              <Table.Cell>1</Table.Cell>
-              <Table.Cell>안녕하세요</Table.Cell>
-              <Table.Cell>ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</Table.Cell>
-              <Table.Cell>
-                <Image width={80} src="/images/defaultThumb.png" />{" "}
-              </Table.Cell>
-              <Table.Cell>3</Table.Cell>
-              <Table.Cell>관ㄹ지ㅏ</Table.Cell>
-              <Table.Cell>2020-01-20 11:12</Table.Cell>
-            </Table.Row>
+            {list.length > 0 ? (
+              list?.map((element, index) => (
+                <Table.Row
+                  className="cusor pointer"
+                  key={element.tfb_seq}
+                  onClick={() => router.push(`/freeBoard/detail/${element.tfb_seq}?${sub_query}`)}
+                >
+                  <Table.Cell>{allCount - index}</Table.Cell>
+                  <Table.Cell>{element.tfb_title}</Table.Cell>
+                  <Table.Cell>{element.tfb_content}</Table.Cell>
+                  <Table.Cell>
+                    {element.tfb_thumb ? <Image width={80} src={element.tfb_thumb} /> : <Image width={80} src="/images/defaultThumb.png" />}
+                  </Table.Cell>
+                  <Table.Cell>{element.tfb_favorite_count}</Table.Cell>
+                  <Table.Cell>{element.tm_name}</Table.Cell>
+                  <Table.Cell>{element.tfb_regDate}</Table.Cell>
+                </Table.Row>
+              ))
+            ) : (
+              <Table.Row>
+                <Table.Cell colSpan={7}>No Data</Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
         </Table>
+        {list.length > 0 && (
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="다음"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={6}
+            pageCount={Math.ceil(allCount / 10)}
+            previousLabel="이전"
+            renderOnZeroPageCount={null}
+            initialPage={router.query.page ? router.query.page - 1 : 0}
+          />
+        )}
       </Segment>
       <Segment basic textAlign="center">
         <Button onClick={() => handleLocation("/freeBoard/register")} primary>
           등록하기
         </Button>
       </Segment>
-    </>
+    </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  let sub_query = "";
+
+  if (context.query.page) {
+    sub_query += `page=${context.query.page}`;
+  } else {
+    sub_query += `page=1`;
+  }
+  if (context.query.searchType) {
+    sub_query += `&searchType=${encodeURI(context.query.searchType)}`;
+  } else {
+    sub_query += `&searchType=""`;
+  }
+  if (context.query.searchValue) {
+    sub_query += `&searchValue=${encodeURI(context.query.searchValue)}`;
+  } else {
+    sub_query += `&searchValue=""`;
+  }
+  const API_URL = `${process.env.NEXT_PUBLIC_PHP_API}/freeBoard/list?${sub_query}`;
+  const res = await axios.get(API_URL);
+
+  return {
+    props: {
+      list: res.data.list,
+      allCount: res.data.allCount,
+    },
+  };
 }

@@ -15,26 +15,26 @@ export default function Home({ list }) {
           베스트 상품
         </Header>
         <Divider />
-        <ItemList list={list.slice(0, 9)} />
+        {/* <ItemList list={list.slice(0, 9)} /> */}
         <Header as="h3" style={{ paddingTop: 40 }}>
           신상품
         </Header>
         <Divider />
-        <ItemList list={list.slice(9)} />
+        {/* <ItemList list={list.slice(9)} /> */}
       </>
     </>
   );
 }
 
-export async function getStaticProps() {
-  const API_URL = process.env.NEXT_PUBLIC_LIST_API;
-  const res = await axios.get(API_URL);
-  const data = res.data;
+// export async function getStaticProps() {
+//   const API_URL = process.env.NEXT_PUBLIC_LIST_API;
+//   const res = await axios.get(API_URL);
+//   const data = res.data;
 
-  return {
-    props: {
-      list: data,
-      name: process.env.name,
-    },
-  };
-}
+//   return {
+//     props: {
+//       list: data,
+//       name: process.env.name,
+//     },
+//   };
+// }

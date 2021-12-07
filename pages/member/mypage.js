@@ -6,20 +6,13 @@ import axios from "axios";
 import Head from "next/head";
 import cookie from "react-cookies";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Button } from "semantic-ui-react";
 import { authContext } from "../../ContextApi/Context";
 
 export default function Mypage({ userData }) {
   const [state, dispatch] = useContext(authContext);
   const router = useRouter();
-
-  useEffect(() => {
-    if (!userData?.tm_seq) {
-      //비로그인
-      router.push("/login");
-    }
-  }, []);
 
   function handleLogout() {
     const formData = new FormData();
@@ -117,12 +110,17 @@ export default function Mypage({ userData }) {
 
 export async function getServerSideProps(context) {
   const seq = context.req.cookies.mInfo ? JSON.parse(context.req.cookies.mInfo)?.tm_seq : null;
+  if (!seq) {
+    return {
+      redirect: {
+        destination: "/login",
+      },
+    };
+  }
   const apiUrl = `${process.env.NEXT_PUBLIC_PHP_API}/user/userinfo?tm_seq=${seq}`;
   const res = await axios.get(apiUrl);
   let data = res?.data;
-  if (!seq) {
-    data = null;
-  }
+
   return {
     props: {
       userData: data,
