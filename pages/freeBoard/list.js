@@ -54,6 +54,7 @@ export default function List({ allCount, list }) {
     <div className="freeBoard list">
       <Head>
         <title>자유게시판</title>
+        <meta name="description" content="자유게시판 페이지입니다."></meta>
       </Head>
       <Segment>
         <Header as="h2" floated="left">
