@@ -11,6 +11,8 @@ class MyDocument extends Document {
       <Html lang="ko">
         <Head>
           <script src="/js/lib/jquery-3.2.1.min.js"></script>
+          <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=k9yckb8c1t"></script>
+          <script src="/js/lib/MarkerClustering.js"></script>
         </Head>
         <body>
           <Main />

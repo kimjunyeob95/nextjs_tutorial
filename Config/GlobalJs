@@ -18,3 +18,10 @@ export function getParameter(name) {
     results = regex.exec(window.location.search);
   return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
+
+export function getFavoriteType(type) {
+  return type === "K" ? "한식" : type === "U" ? "양식" : type === "J" ? "일식" : type === "C" && "중식";
+}
+export function postFavoriteType(type) {
+  return type === "한식" ? "K" : type === "양식" ? "U" : type === "일식" ? "J" : type === "중식" && "C";
+}

@@ -22,5 +22,9 @@ ul li::marker{content: none;}
 .ui.selection.dropdown{min-width: auto !important;}
 .cusor.pointer{cursor: pointer;}
 #__next textarea { resize: none;}
+.favoriteFood.list .column.grid { overflow-y: scroll;height: 550px;}
+.favoriteFood .column.grid::-webkit-scrollbar {
+  display: none;
+}
 /* .freeBoard .form-field {width:16vw;margin-right: 1vw;} */
 
