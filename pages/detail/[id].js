@@ -16,45 +16,33 @@ export default function Post({ item }) {
       </div>
     );
   }
-  return (
-    <>
-      {item && (
-        <>
-          <Head>
-            <title>{item.name}</title>
-            <meta name="description" content={item.description}></meta>
-          </Head>
-          <Item item={item} />
-        </>
-      )}
-    </>
-  );
+  return <></>;
 }
 
-export async function getStaticPaths() {
-  const API_URL = process.env.NEXT_PUBLIC_LIST_API;
-  const res = await axios.get(API_URL);
-  const data = res.data;
-  return {
-    paths: data.slice(0, 9).map((item) => ({
-      params: {
-        id: item.id.toString(),
-      },
-    })),
-    fallback: true,
-  };
-}
+// export async function getStaticPaths() {
+//   const API_URL = process.env.NEXT_PUBLIC_LIST_API;
+//   const res = await axios.get(API_URL);
+//   const data = res.data;
+//   return {
+//     paths: data.slice(0, 9).map((item) => ({
+//       params: {
+//         id: item.id.toString(),
+//       },
+//     })),
+//     fallback: true,
+//   };
+// }
 
-export async function getStaticProps(context) {
-  const id = context.params.id;
-  const apiUrl = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
-  const res = await axios.get(apiUrl);
-  const data = res.data;
+// export async function getStaticProps(context) {
+//   const id = context.params.id;
+//   const apiUrl = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
+//   const res = await axios.get(apiUrl);
+//   const data = res.data;
 
-  return {
-    props: {
-      item: data,
-      name: process.env.name,
-    },
-  };
-}
+//   return {
+//     props: {
+//       item: data,
+//       name: process.env.name,
+//     },
+//   };
+// }

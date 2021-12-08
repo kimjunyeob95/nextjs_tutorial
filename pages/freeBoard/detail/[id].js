@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
-
 import { useContext, useState, useEffect } from "react";
 import { authContext } from "../../../ContextApi/Context";
 import { useRouter } from "next/router";
@@ -9,9 +8,13 @@ import { Loader, Container, Header, Segment, Divider, Image, Comment, Button, Fo
 
 export default function Tfb_seq({ item, comment }) {
   const router = useRouter();
-  const [apiData, setApi] = useState(item);
+  const [apiData, setApi] = useState();
   const [commentList, setCommentList] = useState(comment);
   const [state] = useContext(authContext);
+
+  useEffect(() => {
+    setApi(item);
+  }, [state]);
   let sub_query = "";
   if (router.query.page) {
     sub_query += `page=${router.query.page}`;
@@ -26,6 +29,10 @@ export default function Tfb_seq({ item, comment }) {
   }
 
   useEffect(() => {
+    if (!item) {
+      alert("해당 게시물은 없습니다.");
+      return false;
+    }
     axios.get(`${process.env.NEXT_PUBLIC_PHP_API}/freeBoard/addView?tfb_seq=${router.query.id}`);
   }, []);
 
@@ -74,7 +81,15 @@ export default function Tfb_seq({ item, comment }) {
   const handleReply = (e) => {
     $(e).parent().next().show();
   };
-
+  const handleRemove = () => {
+    axios.get(`${process.env.NEXT_PUBLIC_PHP_API}/freeBoard/removeBoard?tfb_seq=${item.tfb_seq}`).then((res) => {
+      if (res.data.code === "TRUE") {
+        router.push(`/freeBoard/list?${sub_query}`).then(() => alert(res.data.msg));
+      } else {
+        alert(res.data.msg);
+      }
+    });
+  };
   return (
     <>
       {apiData && (
@@ -84,7 +99,7 @@ export default function Tfb_seq({ item, comment }) {
               자유게시판 상세{" "}
             </Header>
             <Header as="h4" floated="right">
-              조회수 : {apiData.tfb_view_count + 1}
+              조회수 : {apiData.tfb_view_count}
             </Header>
             <Header as="h4" floated="right">
               |
@@ -170,11 +185,22 @@ export default function Tfb_seq({ item, comment }) {
                 </Comment.Group>
               </Segment>
               <Segment basic textAlign="center">
-                <Button primary style={{ display: `${state?.mInfo?.tm_seq !== apiData.tfb_regSeq ? "none" : "inline"}` }}>
+                <Button
+                  onClick={() => router.push(`/freeBoard/modify/${apiData.tfb_seq}?${sub_query}`)}
+                  primary
+                  style={{ display: `${state?.mInfo?.tm_seq !== apiData.tfb_regSeq ? "none" : "inline"}` }}
+                >
                   게시글 수정
                 </Button>
                 <Button color={"black"} onClick={() => router.push(`/freeBoard/list?${sub_query}`)}>
                   목록으로
+                </Button>
+                <Button
+                  onClick={() => handleRemove()}
+                  color={"red"}
+                  style={{ display: `${state?.mInfo?.tm_seq !== apiData.tfb_regSeq ? "none" : "inline"}` }}
+                >
+                  게시글 삭제
                 </Button>
               </Segment>
             </div>
@@ -204,6 +230,13 @@ export async function getStaticProps(context) {
   const id = context.params.id;
   const apiUrl = `${process.env.NEXT_PUBLIC_PHP_API}/freeBoard/detail?id=${id}`;
   const res = await axios.get(apiUrl);
+  if (!res.data.data) {
+    return {
+      redirect: {
+        destination: "/freeBoard/list",
+      },
+    };
+  }
 
   return {
     props: {

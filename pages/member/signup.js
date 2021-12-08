@@ -1,5 +1,4 @@
 import axios from "axios";
-import $ from "jquery";
 import cookie from "react-cookies";
 import { useRouter } from "next/router";
 import { useContext } from "react";

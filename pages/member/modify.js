@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Form, Segment } from "semantic-ui-react";
-import $ from "jquery";
 import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";

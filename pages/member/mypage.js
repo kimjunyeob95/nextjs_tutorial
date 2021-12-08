@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Divider, Header, Segment, Grid, Image, Input } from "semantic-ui-react";
-import $ from "jquery";
 import axios from "axios";
 import Head from "next/head";
 import cookie from "react-cookies";

@@ -1,8 +1,6 @@
-import axios from "axios";
 import React, { useContext } from "react";
 import Head from "next/head";
 import { Divider, Header } from "semantic-ui-react";
-import ItemList from "../src/component/Home/ItemList";
 
 export default function Home({ list }) {
   return (

@@ -86,7 +86,8 @@ export default function List({ allCount, list }) {
               control={Input}
               placeholder="검색어를 입력하세요."
             />
-            <Form.Field width={2} id="form-button-control-public" control={Button} content="검색" onClick={(e) => handleSubmit(e)} primary />
+            <Form.Field id="form-button-control-public" control={Button} content="검색" onClick={(e) => handleSubmit(e)} primary />
+            <Form.Field width={2} control={Button} content="검색초기화" onClick={(e) => router.replace("/freeBoard/list")} color="black" />
           </Form.Group>
         </Form>
 
