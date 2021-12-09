@@ -66,7 +66,6 @@ export default function List({ list }) {
     });
   };
   //useEffect hook을 사용하여 초기 페이지가 로딩될때 맵을 생성합니다.
-  console.log(router.query);
   useEffect(() => {
     initMap();
   }, [router.query.tff_cate]);

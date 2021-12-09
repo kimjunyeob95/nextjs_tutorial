@@ -217,7 +217,7 @@ export async function getStaticPaths() {
   const data = res.data.list;
 
   return {
-    paths: data.slice(0, 6).map((item) => ({
+    paths: data.slice(0, 10).map((item) => ({
       params: {
         id: item.tfb_seq.toString(),
       },
