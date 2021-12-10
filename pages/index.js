@@ -23,16 +23,3 @@ export default function Home({ list }) {
     </>
   );
 }
-
-// export async function getStaticProps() {
-//   const API_URL = process.env.NEXT_PUBLIC_LIST_API;
-//   const res = await axios.get(API_URL);
-//   const data = res.data;
-
-//   return {
-//     props: {
-//       list: data,
-//       name: process.env.name,
-//     },
-//   };
-// }

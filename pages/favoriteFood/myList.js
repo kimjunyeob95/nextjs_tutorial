@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getFavoriteType } from "../../Config/GlobalJs";
 
-export default function List({ allCount, list }) {
+export default function List({ allCount, list, numbering }) {
   const router = useRouter();
   let sub_query = "";
 
@@ -92,7 +92,7 @@ export default function List({ allCount, list }) {
             {list.length > 0 ? (
               list?.map((element, index) => (
                 <Table.Row key={element.tff_seq}>
-                  <Table.Cell>{allCount - index}</Table.Cell>
+                  <Table.Cell>{numbering - index}</Table.Cell>
                   <Table.Cell>{getFavoriteType(element.tff_cate)}</Table.Cell>
                   <Table.Cell>{element.tff_title}</Table.Cell>
                   <Table.Cell>{element.tff_desc}</Table.Cell>
@@ -126,18 +126,20 @@ export async function getServerSideProps(context) {
         destination: "/login",
       },
     };
-  }
-  let sub_query = "";
+  } else {
+    let sub_query = "";
 
-  if (context.query.tff_cate) {
-    sub_query += `&tff_cate=${context.query.tff_cate}`;
+    if (context.query.tff_cate) {
+      sub_query += `&tff_cate=${context.query.tff_cate}`;
+    }
+    const API_URL = `${process.env.NEXT_PUBLIC_PHP_API}/favoriteFood/myList?tff_regSeq=${seq}${sub_query}`;
+    const res = await axios.get(API_URL);
+    return {
+      props: {
+        list: res.data.list,
+        allCount: res.data.allCount,
+        numbering: res.data.numbering,
+      },
+    };
   }
-  const API_URL = `${process.env.NEXT_PUBLIC_PHP_API}/favoriteFood/myList?tff_regSeq=${seq}${sub_query}`;
-  const res = await axios.get(API_URL);
-  return {
-    props: {
-      list: res.data.list,
-      allCount: res.data.allCount,
-    },
-  };
 }

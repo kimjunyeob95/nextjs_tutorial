@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
 
-export default function List({ allCount, list }) {
+export default function List({ allCount, list, numbering }) {
   const router = useRouter();
   let sub_query = "";
 
@@ -112,7 +112,7 @@ export default function List({ allCount, list }) {
                   key={element.tfb_seq}
                   onClick={() => router.push(`/freeBoard/detail/${element.tfb_seq}?${sub_query}`)}
                 >
-                  <Table.Cell>{allCount - index}</Table.Cell>
+                  <Table.Cell>{numbering - index}</Table.Cell>
                   <Table.Cell>{element.tfb_title}</Table.Cell>
                   <Table.Cell>{element.tfb_content}</Table.Cell>
                   <Table.Cell>
@@ -177,6 +177,7 @@ export async function getServerSideProps(context) {
     props: {
       list: res.data.list,
       allCount: res.data.allCount,
+      numbering: res.data.numbering,
     },
   };
 }
