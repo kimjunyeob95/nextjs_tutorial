@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getFavoriteType } from "../../Config/GlobalJs";
 
-export default function List({ allCount, list, numbering }) {
+export default function List({ list, numbering }) {
   const router = useRouter();
   let sub_query = "";
 

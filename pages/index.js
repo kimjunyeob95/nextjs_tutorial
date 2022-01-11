@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import Head from "next/head";
 import { Divider, Header } from "semantic-ui-react";
 
-export default function Home({ list }) {
+export default function Home() {
   return (
     <>
       <Head>
@@ -13,12 +13,11 @@ export default function Home({ list }) {
           베스트 상품
         </Header>
         <Divider />
-        {/* <ItemList list={list.slice(0, 9)} /> */}
+
         <Header as="h3" style={{ paddingTop: 40 }}>
           신상품
         </Header>
         <Divider />
-        {/* <ItemList list={list.slice(9)} /> */}
       </>
     </>
   );
