@@ -222,7 +222,7 @@ export async function getStaticPaths() {
         id: item.tfb_seq.toString(),
       },
     })),
-    fallback: true,
+    fallback: true, //false -> 빌드시점에 없는 페이지는 무조건 404로 넘어간다.
   };
 }
 
@@ -230,6 +230,7 @@ export async function getStaticProps(context) {
   const id = context.params.id;
   const apiUrl = `${process.env.NEXT_PUBLIC_PHP_API}/freeBoard/detail?id=${id}`;
   const res = await axios.get(apiUrl);
+
   if (!res.data.data) {
     return {
       redirect: {
