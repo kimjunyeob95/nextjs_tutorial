@@ -2,7 +2,6 @@
 
 export default function handler(req, res) {
   if (req.method === "POST") {
-    console.log(req);
     res.setHeader("Set-Cookie", "mInfo=Mike;Max-Age=3600");
     res.statusCode = 200;
     res.json({ message: "ok" });

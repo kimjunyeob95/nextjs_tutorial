@@ -1,13 +1,19 @@
 import axios from "axios";
 import cookie from "react-cookies";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
 import { authContext } from "../ContextApi/Context";
 
 export default function Login() {
   const [state, dispatch] = useContext(authContext);
   const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.returnUrl) {
+      alert("로그인을 해주세요.");
+    }
+  }, [router]);
 
   function login() {
     if (!$("#tm_id").val()) {
@@ -36,7 +42,11 @@ export default function Login() {
         }
 
         dispatch({ type: "login", mInfo: res.data.mInfo });
-        router.push("/member/mypage").then(() => alert(res.data.msg));
+        if (router.query.returnUrl) {
+          router.push(router.query.returnUrl).then(() => alert(res.data.msg));
+        } else {
+          router.push("/member/mypage").then(() => alert(res.data.msg));
+        }
       } else if (res.data.code !== "TRUE") {
         alert(res.data.msg);
         return false;

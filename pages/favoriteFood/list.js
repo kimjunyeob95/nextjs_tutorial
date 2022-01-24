@@ -3,10 +3,10 @@
 /* eslint-disable @next/next/no-sync-scripts */
 import { Divider, Header, Segment, Grid, Container, Button } from "semantic-ui-react";
 import axios from "axios";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getFavoriteType } from "../../Config/GlobalJs";
+import { HeadInfo } from "../../src/component/HeadInfo";
 
 export default function List({ list }) {
   const router = useRouter();
@@ -90,10 +90,8 @@ export default function List({ list }) {
   };
   return (
     <div className="favoriteFood list">
-      <Head>
-        <title>맛집정보</title>
-        <meta name="description" content="맛집정보 페이지입니다."></meta>
-      </Head>
+      <HeadInfo title="맛집정보" desc="맛집정보 페이지입니다." />
+
       <Segment>
         <Header as="h2" floated="left">
           맛집정보

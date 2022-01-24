@@ -6,6 +6,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getFavoriteType } from "../../Config/GlobalJs";
+import { authContext } from "../../ContextApi/Context";
 
 export default function List({ list, numbering }) {
   const router = useRouter();
@@ -120,26 +121,18 @@ export default function List({ list, numbering }) {
 
 export async function getServerSideProps(context) {
   const seq = context.req.cookies.mInfo ? JSON.parse(context.req.cookies.mInfo)?.tm_seq : null;
-  if (!seq) {
-    return {
-      redirect: {
-        destination: "/login",
-      },
-    };
-  } else {
-    let sub_query = "";
+  let sub_query = "";
 
-    if (context.query.tff_cate) {
-      sub_query += `&tff_cate=${context.query.tff_cate}`;
-    }
-    const API_URL = `${process.env.NEXT_PUBLIC_PHP_API}/favoriteFood/myList?tff_regSeq=${seq}${sub_query}`;
-    const res = await axios.get(API_URL);
-    return {
-      props: {
-        list: res.data.list,
-        allCount: res.data.allCount,
-        numbering: res.data.numbering,
-      },
-    };
+  if (context.query.tff_cate) {
+    sub_query += `&tff_cate=${context.query.tff_cate}`;
   }
+  const API_URL = `${process.env.NEXT_PUBLIC_PHP_API}/favoriteFood/myList?tff_regSeq=${seq}${sub_query}`;
+  const res = await axios.get(API_URL);
+  return {
+    props: {
+      list: res.data.list,
+      allCount: res.data.allCount,
+      numbering: res.data.numbering,
+    },
+  };
 }

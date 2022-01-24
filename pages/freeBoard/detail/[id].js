@@ -8,13 +8,10 @@ import { Loader, Container, Header, Segment, Divider, Image, Comment, Button, Fo
 
 export default function Tfb_seq({ item, comment }) {
   const router = useRouter();
-  const [apiData, setApi] = useState();
+  const [apiData, setApi] = useState(item);
   const [commentList, setCommentList] = useState(comment);
   const [state] = useContext(authContext);
 
-  useEffect(() => {
-    setApi(item);
-  }, [state]);
   let sub_query = "";
   if (router.query.page) {
     sub_query += `page=${router.query.page}`;
