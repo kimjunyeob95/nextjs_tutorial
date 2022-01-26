@@ -12,29 +12,14 @@ import Top from "src/component/Top";
 import Login from "pages/login";
 import { Container } from "semantic-ui-react";
 import { useRouter } from "next/router";
-import { PrivateCheck } from "src/component/PrivateCheck";
 import { useEffect } from "react";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, loginFlag }) {
   const router = useRouter();
-  if (!PrivateCheck() && Component.privateRoute) {
-    //로그인필요
+  if (!loginFlag && Component.privateRoute) {
     useEffect(() => {
       router.replace(`/login?returnUrl=${encodeURIComponent(router.asPath)}`);
     }, []);
-    return (
-      <ContextStore>
-        <Head>
-          <title>Nextjs made by junyeob</title>
-          <meta name="description" content="nextjs를 이용한 사이트입니다."></meta>
-        </Head>
-        <Container>
-          <Top />
-          <Login />
-          <Footer />
-        </Container>
-      </ContextStore>
-    );
   }
   return (
     <ContextStore>
@@ -44,12 +29,16 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Container>
         <Top />
-        <Component {...pageProps} />
+        {!loginFlag && Component.privateRoute ? <Login /> : <Component {...pageProps} />}
         <Footer />
       </Container>
     </ContextStore>
   );
 }
+MyApp.getInitialProps = async (appContext) => {
+  const loginFlag = appContext?.ctx?.req?.cookies?.mInfo ? true : false;
+  return { loginFlag };
+};
 
 export default MyApp;
 
