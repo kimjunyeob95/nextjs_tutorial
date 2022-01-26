@@ -9,7 +9,6 @@ import ReactPaginate from "react-paginate";
 import { authContext } from "ContextApi/Context";
 import { fetcher_post } from "hooks/useFetch";
 import Link from "next/link";
-
 export default function List({ allCount, list, numbering }) {
   const router = useRouter();
   const [state] = useContext(authContext);
@@ -165,6 +164,7 @@ export default function List({ allCount, list, numbering }) {
 }
 
 List.privateRoute = true;
+
 export const getServerSideProps = async (context) => {
   let sub_query = "";
 

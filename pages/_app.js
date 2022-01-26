@@ -12,15 +12,14 @@ import Top from "src/component/Top";
 import Login from "pages/login";
 import { Container } from "semantic-ui-react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 function MyApp({ Component, pageProps, loginFlag }) {
   const router = useRouter();
   if (!loginFlag && Component.privateRoute) {
-    useEffect(() => {
+    setTimeout(() => {
       router.replace(`/login?returnUrl=${encodeURIComponent(router.asPath)}`);
-    }, []);
+    }, 0);
   }
+
   return (
     <ContextStore>
       <Head>
@@ -36,7 +35,7 @@ function MyApp({ Component, pageProps, loginFlag }) {
   );
 }
 MyApp.getInitialProps = async (appContext) => {
-  const loginFlag = appContext?.ctx?.req?.cookies?.mInfo ? true : false;
+  const loginFlag = (await appContext?.ctx?.req?.cookies?.mInfo) ? true : false;
   return { loginFlag };
 };
 

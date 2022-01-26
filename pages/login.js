@@ -10,10 +10,11 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.query.returnUrl) {
-      alert("로그인을 해주세요.");
+    if (cookie.load("mInfo")) {
+      router.back();
     }
-  }, [router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function login() {
     if (!$("#tm_id").val()) {
@@ -33,14 +34,14 @@ export default function Login() {
       if (res.data.code === "TRUE") {
         //로그인 성공
         const expires = new Date();
-        expires.setDate(expires.getDate() + 1);
+        //1*60*1000 => 1분
+        expires.setTime(expires.getTime() + 2 * 60 * 60 * 1000); //2시간
         if (!cookie.load("mInfo")) {
           cookie.save("mInfo", res.data.mInfo, {
             path: "/",
             expires,
           });
         }
-
         dispatch({ type: "login", mInfo: res.data.mInfo });
         if (router.query.returnUrl) {
           router.push(router.query.returnUrl).then(() => alert(res.data.msg));
