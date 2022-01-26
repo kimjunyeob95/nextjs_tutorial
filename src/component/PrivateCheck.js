@@ -1,5 +1,6 @@
-export const PrivateCheck = (context) => {
-  if (!context.req.cookies.mInfo) {
+import cookie from "react-cookies";
+export const PrivateCheck = () => {
+  if (!cookie.load("mInfo")) {
     return false;
   } else {
     return true;

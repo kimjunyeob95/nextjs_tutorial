@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import { useContext, useState, useEffect } from "react";
-import { authContext } from "../../../ContextApi/Context";
+import { authContext } from "ContextApi/Context";
 import { useRouter } from "next/router";
 import { Loader, Container, Header, Segment, Divider, Image, Comment, Button, Form } from "semantic-ui-react";
 
@@ -214,7 +214,7 @@ export async function getStaticPaths() {
   const data = res.data.list;
 
   return {
-    paths: data.slice(0, 10).map((item) => ({
+    paths: data.slice(0, 3).map((item) => ({
       params: {
         id: item.tfb_seq.toString(),
       },

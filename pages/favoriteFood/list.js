@@ -5,8 +5,8 @@ import { Divider, Header, Segment, Grid, Container, Button } from "semantic-ui-r
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getFavoriteType } from "../../Config/GlobalJs";
-import { HeadInfo } from "../../src/component/HeadInfo";
+import { getFavoriteType } from "Config/GlobalJs";
+import { HeadInfo } from "src/component/HeadInfo";
 
 export default function List({ list }) {
   const router = useRouter();

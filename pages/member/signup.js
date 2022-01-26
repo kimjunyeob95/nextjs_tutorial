@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import Head from "next/head";
 import { Button, Checkbox, Form, Header, Container } from "semantic-ui-react";
-import { authContext } from "../../ContextApi/Context";
+import { authContext } from "ContextApi/Context";
 
 export default function Signup() {
   const [state, dispatch] = useContext(authContext);

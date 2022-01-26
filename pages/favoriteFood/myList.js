@@ -5,8 +5,8 @@ import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { getFavoriteType } from "../../Config/GlobalJs";
-import { authContext } from "../../ContextApi/Context";
+import { getFavoriteType } from "Config/GlobalJs";
+import { authContext } from "ContextApi/Context";
 
 export default function List({ list, numbering }) {
   const router = useRouter();

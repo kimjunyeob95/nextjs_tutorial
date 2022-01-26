@@ -106,16 +106,10 @@ export default function Mypage({ userData }) {
     </>
   );
 }
-
+Mypage.privateRoute = true;
 export async function getServerSideProps(context) {
   const seq = context.req.cookies.mInfo ? JSON.parse(context.req.cookies.mInfo)?.tm_seq : null;
-  if (!seq) {
-    return {
-      redirect: {
-        destination: "/login",
-      },
-    };
-  }
+
   const apiUrl = `${process.env.NEXT_PUBLIC_PHP_API}/user/userinfo?tm_seq=${seq}`;
   const res = await axios.get(apiUrl);
   let data = res?.data;

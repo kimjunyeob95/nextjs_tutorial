@@ -2,14 +2,14 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Divider, Header, Segment, Table, Image, Button, Input, Form } from "semantic-ui-react";
-import { HeadInfo } from "../../src/component/HeadInfo";
+import { HeadInfo } from "src/component/HeadInfo";
 import { useRouter } from "next/router";
 import { useEffect, useContext } from "react";
 import ReactPaginate from "react-paginate";
-import { authContext } from "../../ContextApi/Context";
-import { PrivateCheck } from "../../src/component/PrivateCheck";
-import { fetcher_post } from "../../hooks/useFetch";
+import { authContext } from "ContextApi/Context";
+import { fetcher_post } from "hooks/useFetch";
 import { SWRConfig } from "swr";
+import Link from "next/link";
 
 export default function List({ allCount, list, numbering, fallback }) {
   const router = useRouter();
@@ -117,11 +117,19 @@ export default function List({ allCount, list, numbering, fallback }) {
                     key={element.tfb_seq}
                     onClick={() => router.push(`/freeBoard/detail/${element.tfb_seq}?${sub_query}`)}
                   >
-                    <Table.Cell>{numbering - index}</Table.Cell>
+                    <Table.Cell>
+                      <Link href={`/freeBoard/detail/${element.tfb_seq}?${sub_query}`}>
+                        <a>{numbering - index}</a>
+                      </Link>
+                    </Table.Cell>
                     <Table.Cell>{element.tfb_title}</Table.Cell>
                     <Table.Cell>{element.tfb_content}</Table.Cell>
                     <Table.Cell>
-                      {element.tfb_thumb ? <Image width={80} src={element.tfb_thumb} /> : <Image width={80} src="/images/defaultThumb.png" />}
+                      {element.tfb_thumb ? (
+                        <Image width={80} src={element.tfb_thumb} alt={element.tfb_title} />
+                      ) : (
+                        <Image width={80} src="/images/defaultThumb.png" />
+                      )}
                     </Table.Cell>
                     <Table.Cell>{element.tfb_view_count}</Table.Cell>
                     <Table.Cell>{element.tm_name}</Table.Cell>
@@ -159,16 +167,8 @@ export default function List({ allCount, list, numbering, fallback }) {
   );
 }
 
+List.privateRoute = true;
 export const getServerSideProps = async (context) => {
-  if (!PrivateCheck(context)) {
-    return {
-      redirect: {
-        destination: `/login?returnUrl=${encodeURIComponent(context.resolvedUrl)}`,
-        permanent: false,
-      },
-    };
-  }
-
   let sub_query = "";
 
   if (context.query.page) {

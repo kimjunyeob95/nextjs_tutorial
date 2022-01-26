@@ -3,7 +3,7 @@ import cookie from "react-cookies";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
-import { authContext } from "../ContextApi/Context";
+import { authContext } from "ContextApi/Context";
 
 export default function Login() {
   const [state, dispatch] = useContext(authContext);

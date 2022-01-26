@@ -1,23 +1,46 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /*
   글로벌 css와 레이아웃을 정의한다.
 */
-import ContextStore from "../ContextApi/Context";
-import "../styles/globals.css";
+import ContextStore from "ContextApi/Context";
+import "styles/globals.css";
 import "semantic-ui-css/semantic.min.css";
 import Head from "next/head";
-import Footer from "../src/component/Footer";
-import Top from "../src/component/Top";
-
+import Footer from "src/component/Footer";
+import Top from "src/component/Top";
+import Login from "pages/login";
 import { Container } from "semantic-ui-react";
-import ChageRouter from "../src/component/ChageRouter";
+import { useRouter } from "next/router";
+import { PrivateCheck } from "src/component/PrivateCheck";
+import { useEffect } from "react";
+
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+  if (!PrivateCheck() && Component.privateRoute) {
+    //로그인필요
+    useEffect(() => {
+      router.replace(`/login?returnUrl=${encodeURIComponent(router.asPath)}`);
+    }, []);
+    return (
+      <ContextStore>
+        <Head>
+          <title>Nextjs made by junyeob</title>
+          <meta name="description" content="nextjs를 이용한 사이트입니다."></meta>
+        </Head>
+        <Container>
+          <Top />
+          <Login />
+          <Footer />
+        </Container>
+      </ContextStore>
+    );
+  }
   return (
     <ContextStore>
       <Head>
         <title>Nextjs made by junyeob</title>
         <meta name="description" content="nextjs를 이용한 사이트입니다."></meta>
       </Head>
-      <ChageRouter />
       <Container>
         <Top />
         <Component {...pageProps} />
@@ -28,6 +51,7 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+
 /**
  * 페이지 전환 시 레이아웃을 유지할 수 있습니다.
  * 페이지 전환시 상태값을 유지할 수 있습니다.
