@@ -4,14 +4,12 @@
 import { Divider, Header, Segment, Table, Image, Button, Input, Form } from "semantic-ui-react";
 import { HeadInfo } from "src/component/HeadInfo";
 import { useRouter } from "next/router";
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
-import { authContext } from "ContextApi/Context";
 import { fetcher_post } from "hooks/useFetch";
 import Link from "next/link";
 export default function List({ allCount, list, numbering }) {
   const router = useRouter();
-  const [state] = useContext(authContext);
 
   let sub_query = "";
 

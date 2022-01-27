@@ -1,6 +1,7 @@
-import cookie from "react-cookies";
+import { useCookies } from "react-cookie";
 export const PrivateCheck = () => {
-  if (!cookie.load("mInfo")) {
+  const [cookies, setCookie, removeCookie] = useCookies();
+  if (!cookies.mInfo) {
     return false;
   } else {
     return true;

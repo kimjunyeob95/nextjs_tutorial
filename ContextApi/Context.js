@@ -1,11 +1,14 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useReducer } from "react";
-import cookie from "react-cookies";
-
+import { useCookies } from "react-cookie";
 export const authContext = React.createContext();
 
-export const indexInitialState = {
-  loginFlag: cookie.load("mInfo") ? true : false,
-  mInfo: cookie.load("mInfo"),
+export const indexInitialState = () => {
+  const [cookies, setCookie, removeCookie] = useCookies();
+  return {
+    loginFlag: cookies.mInfo ? true : false,
+    mInfo: cookies.mInfo ? true : false,
+  };
 };
 
 export const indexReducer = (state, action) => {
@@ -27,7 +30,7 @@ export const indexReducer = (state, action) => {
 };
 
 const ContextStore = (props) => {
-  return <authContext.Provider value={useReducer(indexReducer, indexInitialState)}>{props.children}</authContext.Provider>;
+  return <authContext.Provider value={useReducer(indexReducer, indexInitialState())}>{props.children}</authContext.Provider>;
 };
 
 export default ContextStore;

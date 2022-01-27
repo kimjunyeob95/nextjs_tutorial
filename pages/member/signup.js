@@ -1,14 +1,22 @@
 import axios from "axios";
-import cookie from "react-cookies";
+import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Head from "next/head";
 import { Button, Checkbox, Form, Header, Container } from "semantic-ui-react";
 import { authContext } from "ContextApi/Context";
 
 export default function Signup() {
   const [state, dispatch] = useContext(authContext);
+  const [cookies, setCookie, removeCookie] = useCookies();
   const router = useRouter();
+
+  useEffect(() => {
+    if (cookies.mInfo) {
+      router.back();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleSubmit() {
     let validation = true;
@@ -37,10 +45,13 @@ export default function Signup() {
         if (res.data.code === "TRUE") {
           //로그인 성공
           const expires = new Date();
-          expires.setDate(expires.getDate() + 1);
-          cookie.save("mInfo", res.data.mInfo, {
+          //1*60*1000 => 1분
+          expires.setTime(expires.getTime() + 2 * 60 * 60 * 1000); //2시간
+          setCookie("mInfo", res.data.mInfo, {
             path: "/",
             expires,
+            samesite: "none",
+            secure: true,
           });
 
           dispatch({ type: "login", mInfo: res.data.mInfo });

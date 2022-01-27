@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps, loginFlag }) {
   const router = useRouter();
   if (!loginFlag && Component.privateRoute) {
     setTimeout(() => {
-      router.replace(`/login?returnUrl=${encodeURIComponent(router.asPath)}`);
+      router.replace(`/login?returnUrl=${encodeURIComponent(router.asPath)}`).then(() => alert("로그인이 필요합니다."));
     }, 0);
   }
 

@@ -1,16 +1,17 @@
 import axios from "axios";
-import cookie from "react-cookies";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
 import { authContext } from "ContextApi/Context";
+import { useCookies } from "react-cookie";
 
 export default function Login() {
   const [state, dispatch] = useContext(authContext);
+  const [cookies, setCookie, removeCookie] = useCookies();
   const router = useRouter();
 
   useEffect(() => {
-    if (cookie.load("mInfo")) {
+    if (cookies.mInfo) {
       router.back();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,9 +37,11 @@ export default function Login() {
         const expires = new Date();
         //1*60*1000 => 1분
         expires.setTime(expires.getTime() + 2 * 60 * 60 * 1000); //2시간
-        if (!cookie.load("mInfo")) {
-          cookie.save("mInfo", res.data.mInfo, {
+        if (!cookies.mInfo) {
+          setCookie("mInfo", res.data.mInfo, {
             path: "/",
+            secure: true,
+            sameSite: "none",
             expires,
           });
         }

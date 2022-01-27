@@ -3,7 +3,7 @@
 import { Divider, Header, Segment, Grid, Image, Input } from "semantic-ui-react";
 import axios from "axios";
 import Head from "next/head";
-import cookie from "react-cookies";
+import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { Button } from "semantic-ui-react";
@@ -11,6 +11,7 @@ import { authContext } from "../../ContextApi/Context";
 
 export default function Mypage({ userData }) {
   const [state, dispatch] = useContext(authContext);
+  const [cookies, setCookie, removeCookie] = useCookies();
   const router = useRouter();
 
   function handleLogout() {
@@ -21,7 +22,7 @@ export default function Mypage({ userData }) {
     axios.post(`${process.env.NEXT_PUBLIC_PHP_API}/user/logout`, formData).then((res) => {
       if (res.data.code === "TRUE") {
         //로그아웃 성공
-        cookie.remove("mInfo", { path: "/" });
+        removeCookie("mInfo", { path: "/" });
         dispatch({ type: "logout" });
         router.push("/").then(() => alert(res.data.msg));
       } else {
