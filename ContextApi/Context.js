@@ -7,7 +7,7 @@ export const indexInitialState = () => {
   const [cookies, setCookie, removeCookie] = useCookies();
   return {
     loginFlag: cookies.mInfo ? true : false,
-    mInfo: cookies.mInfo ? true : false,
+    mInfo: cookies.mInfo ? cookies.mInfo : false,
   };
 };
 
