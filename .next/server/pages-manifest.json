@@ -1,0 +1,8 @@
+{
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/member/mypage": "pages/member/mypage.js",
+  "/favoriteFood/list": "pages/favoriteFood/list.js",
+  "/freeBoard/list": "pages/freeBoard/list.js"
+}
