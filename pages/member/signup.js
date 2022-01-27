@@ -50,8 +50,6 @@ export default function Signup() {
           setCookie("mInfo", res.data.mInfo, {
             path: "/",
             expires,
-            samesite: "none",
-            secure: true,
           });
 
           dispatch({ type: "login", mInfo: res.data.mInfo });

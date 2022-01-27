@@ -12,12 +12,13 @@ import Top from "src/component/Top";
 import Login from "pages/login";
 import { Container } from "semantic-ui-react";
 import { useRouter } from "next/router";
+
 function MyApp({ Component, pageProps, loginFlag }) {
   const router = useRouter();
   if (!loginFlag && Component.privateRoute) {
-    setTimeout(() => {
-      router.replace(`/login?returnUrl=${encodeURIComponent(router.asPath)}`).then(() => alert("로그인이 필요합니다."));
-    }, 0);
+      setTimeout(() => {
+        router.replace(`/login?returnUrl=${encodeURIComponent(router.asPath)}`).then(() => alert("로그인이 필요합니다."));
+      }, 0);
   }
 
   return (

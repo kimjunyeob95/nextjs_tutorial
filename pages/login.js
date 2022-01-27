@@ -32,15 +32,15 @@ export default function Login() {
     formData.append("tm_id", $("#tm_id").val());
     formData.append("tm_pw", $("#tm_pw").val());
     axios.post(`${process.env.NEXT_PUBLIC_PHP_API}/user/login`, formData).then((res) => {
+      
       if (res.data.code === "TRUE") {
+        
         //로그인 성공
         const expires = new Date();
         //1*60*1000 => 1분
         expires.setTime(expires.getTime() + 2 * 60 * 60 * 1000); //2시간
         setCookie("mInfo", res.data.mInfo, {
           path: "/",
-          secure: true,
-          sameSite: "none",
           expires,
         });
         dispatch({ type: "login", mInfo: res.data.mInfo });
