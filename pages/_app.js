@@ -3,6 +3,21 @@
 /*
   글로벌 css와 레이아웃을 정의한다.
 */
+import NProgress from "nprogress";
+import Router from "next/router";
+import "nprogress/nprogress.css";
+
+NProgress.configure({
+  minimum: 0.3,
+  easing: "ease",
+  speed: 800,
+  showSpinner: false,
+});
+
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
+
 import ContextStore from "ContextApi/Context";
 import "styles/globals.css";
 import "semantic-ui-css/semantic.min.css";
@@ -12,15 +27,33 @@ import Top from "src/component/Top";
 import Login from "pages/login";
 import { Container } from "semantic-ui-react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 function MyApp({ Component, pageProps, loginFlag }) {
   const router = useRouter();
   if (!loginFlag && Component.privateRoute) {
-      setTimeout(() => {
-        router.replace(`/login?returnUrl=${encodeURIComponent(router.asPath)}`).then(() => alert("로그인이 필요합니다."));
-      }, 0);
+    setTimeout(() => {
+      router.replace(`/login?returnUrl=${encodeURIComponent(router.asPath)}`).then(() => alert("로그인이 필요합니다."));
+    }, 0);
   }
 
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const start = () => {
+      setLoading(true);
+    };
+    const end = () => {
+      setLoading(false);
+    };
+    Router.events.on("routeChangeStart", start);
+    Router.events.on("routeChangeComplete", end);
+    Router.events.on("routeChangeError", end);
+    return () => {
+      Router.events.off("routeChangeStart", start);
+      Router.events.off("routeChangeComplete", end);
+      Router.events.off("routeChangeError", end);
+    };
+  }, []);
   return (
     <ContextStore>
       <Head>
@@ -29,7 +62,7 @@ function MyApp({ Component, pageProps, loginFlag }) {
       </Head>
       <Container>
         <Top />
-        {!loginFlag && Component.privateRoute ? <Login /> : <Component {...pageProps} />}
+        {loading ? <h2>로딩중입니다.</h2> : !loginFlag && Component.privateRoute ? <Login /> : <Component {...pageProps} />}
         <Footer />
       </Container>
     </ContextStore>

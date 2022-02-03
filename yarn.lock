@@ -2894,6 +2894,11 @@
     "gauge" "~2.7.3"
     "set-blocking" "~2.0.0"
 
+"nprogress@^0.2.0":
+  "integrity" "sha1-y480xTIT2JVyP8urkH6UIq28r7E="
+  "resolved" "https://registry.npmjs.org/nprogress/-/nprogress-0.2.0.tgz"
+  "version" "0.2.0"
+
 "nssocket@0.6.0":
   "integrity" "sha1-Wflvb/MhVm8zxw99vu7N/cBxVPo="
   "resolved" "https://registry.npmjs.org/nssocket/-/nssocket-0.6.0.tgz"

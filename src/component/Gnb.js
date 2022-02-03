@@ -14,6 +14,8 @@ export default function Gnb() {
     activeItem = "자유게시판";
   } else if (router.pathname.indexOf("favoriteFood") > 0) {
     activeItem = "맛집정보";
+  } else if (router.pathname.indexOf("테스트 통신") > 0) {
+    activeItem = "테스트 통신";
   }
 
   const handleGoLink = (e, data) => {
@@ -27,6 +29,8 @@ export default function Gnb() {
       router.push("/member/mypage");
     } else if (data.name === "맛집정보") {
       router.push("/favoriteFood/list");
+    } else if (data.name === "테스트 통신") {
+      router.push("/testList");
     }
   };
   return (
@@ -37,6 +41,7 @@ export default function Gnb() {
         <Menu.Item name="맛집정보" active={activeItem === "맛집정보"} onClick={handleGoLink} />
         <Menu.Item name="자유게시판" active={activeItem === "자유게시판"} onClick={handleGoLink} />
         <Menu.Item name="회원페이지" active={activeItem === "회원페이지"} onClick={handleGoLink} />
+        <Menu.Item name="테스트 통신" active={activeItem === "테스트 통신"} onClick={handleGoLink} />
       </Menu>
     </div>
   );
