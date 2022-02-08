@@ -19,7 +19,7 @@ export default function About() {
         <List.Item>
           <List.Icon name="mail" />
           <List.Content>
-            <a href="mailto:jack@semantic-ui.com">jack@semantic-ui.com</a>
+            <a href="mailto:devtoproduction@gmail.com">devtoproduction@gmail.com</a>
           </List.Content>
         </List.Item>
         <List.Item>

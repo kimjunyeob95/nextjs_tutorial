@@ -3,20 +3,20 @@
 /*
   글로벌 css와 레이아웃을 정의한다.
 */
-import NProgress from "nprogress";
+
 import Router from "next/router";
-import "nprogress/nprogress.css";
 
-NProgress.configure({
-  minimum: 0.3,
-  easing: "ease",
-  speed: 800,
-  showSpinner: false,
-});
+const fn_progress = (type) => {
+  if (type === "start") {
+    $("#container-wrap").addClass("loading");
+  } else if (type === "done") {
+    $("#container-wrap").removeClass("loading");
+  }
+};
 
-Router.events.on("routeChangeStart", () => NProgress.start());
-Router.events.on("routeChangeComplete", () => NProgress.done());
-Router.events.on("routeChangeError", () => NProgress.done());
+Router.events.on("routeChangeStart", () => fn_progress("start"));
+Router.events.on("routeChangeComplete", () => fn_progress("done"));
+Router.events.on("routeChangeError", () => fn_progress("done"));
 
 import ContextStore from "ContextApi/Context";
 import "styles/globals.css";
@@ -27,33 +27,16 @@ import Top from "src/component/Top";
 import Login from "pages/login";
 import { Container } from "semantic-ui-react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 function MyApp({ Component, pageProps, loginFlag }) {
   const router = useRouter();
+
   if (!loginFlag && Component.privateRoute) {
     setTimeout(() => {
       router.replace(`/login?returnUrl=${encodeURIComponent(router.asPath)}`).then(() => alert("로그인이 필요합니다."));
     }, 0);
   }
 
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const start = () => {
-      setLoading(true);
-    };
-    const end = () => {
-      setLoading(false);
-    };
-    Router.events.on("routeChangeStart", start);
-    Router.events.on("routeChangeComplete", end);
-    Router.events.on("routeChangeError", end);
-    return () => {
-      Router.events.off("routeChangeStart", start);
-      Router.events.off("routeChangeComplete", end);
-      Router.events.off("routeChangeError", end);
-    };
-  }, []);
   return (
     <ContextStore>
       <Head>
@@ -62,7 +45,7 @@ function MyApp({ Component, pageProps, loginFlag }) {
       </Head>
       <Container>
         <Top />
-        {loading ? <h2>로딩중입니다.</h2> : !loginFlag && Component.privateRoute ? <Login /> : <Component {...pageProps} />}
+        <div id="container-wrap">{!loginFlag && Component.privateRoute ? <Login /> : <Component {...pageProps} />}</div>
         <Footer />
       </Container>
     </ContextStore>

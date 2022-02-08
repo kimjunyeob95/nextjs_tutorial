@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
 import { authContext } from "ContextApi/Context";
 import { useCookies } from "react-cookie";
@@ -15,9 +16,9 @@ export default function Login() {
       router.back();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  function login() {
+    $("#tm_id").focus();
+  }, [router]);
+  const login = useCallback(() => {
     if (!$("#tm_id").val()) {
       alert("아이디를 입력하세요.");
       $("#tm_id").focus();
@@ -32,9 +33,7 @@ export default function Login() {
     formData.append("tm_id", $("#tm_id").val());
     formData.append("tm_pw", $("#tm_pw").val());
     axios.post(`${process.env.NEXT_PUBLIC_PHP_API}/user/login`, formData).then((res) => {
-      
       if (res.data.code === "TRUE") {
-        
         //로그인 성공
         const expires = new Date();
         //1*60*1000 => 1분
@@ -54,7 +53,7 @@ export default function Login() {
         return false;
       }
     });
-  }
+  }, []);
 
   const handleDetail = (path) => {
     router.push(path);

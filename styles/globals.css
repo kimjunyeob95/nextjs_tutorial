@@ -26,5 +26,15 @@ ul li::marker{content: none;}
 .favoriteFood .column.grid::-webkit-scrollbar {
   display: none;
 }
+.loading {
+  background-image: url('/images/loading.gif');
+  background-size: 60px;
+  background-repeat: no-repeat;
+  height: 500px;
+  background-position: center;
+}
+.loading div{
+  opacity: 0;
+}
 /* .freeBoard .form-field {width:16vw;margin-right: 1vw;} */
 
